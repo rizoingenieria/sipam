@@ -1,0 +1,22 @@
+[
+  {
+    "clave": "perpetuidad",
+    "nombre": "Perpetuidad",
+    "duracion_anios": 99,
+    "duracion_maxima_anios": null,
+    "renovable": false,
+    "permite_cesion": true,
+    "fundamento": "Art. 3, fr. XXX y XLIV",
+    "vigente_desde": "2023-05-01"
+  },
+  {
+    "clave": "temporalidad",
+    "nombre": "Temporalidad",
+    "duracion_anios": 7,
+    "duracion_maxima_anios": 21,
+    "renovable": true,
+    "permite_cesion": true,
+    "fundamento": "Art. 3, fr. XLII y la numerada XL (temporalidad máxima); art. 27",
+    "vigente_desde": "2023-05-01"
+  }
+]

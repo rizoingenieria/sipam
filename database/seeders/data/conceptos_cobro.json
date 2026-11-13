@@ -1,0 +1,15 @@
+[
+  {"clave": "titulo_adquisicion", "nombre": "Título por adquisición", "categoria": "titulo", "por_seccion": true, "unidad": "título", "fundamento": "Arts. 33, 65 y 70; la hoja de requisitos indica que el costo depende de la sección", "orden": 10, "activo": true},
+  {"clave": "titulo_regularizacion", "nombre": "Título por regularización o cambio de propietario", "categoria": "titulo", "por_seccion": false, "unidad": "título", "fundamento": "Arts. 27, 65 y 70", "orden": 20, "activo": true},
+  {"clave": "renovacion_derecho", "nombre": "Renovación de derecho a temporalidad", "categoria": "titulo", "por_seccion": false, "unidad": "renovación", "fundamento": "Art. 21, fr. XV y XVI", "orden": 30, "activo": false},
+  {"clave": "inhumacion", "nombre": "Inhumación", "categoria": "servicio", "por_seccion": false, "unidad": "servicio", "fundamento": "Arts. 36, 65 y 70", "orden": 40, "activo": true},
+  {"clave": "exhumacion", "nombre": "Exhumación", "categoria": "servicio", "por_seccion": false, "unidad": "servicio", "fundamento": "Arts. 29, 36, 65 y 70", "orden": 50, "activo": true},
+  {"clave": "reinhumacion", "nombre": "Reinhumación", "categoria": "servicio", "por_seccion": false, "unidad": "servicio", "fundamento": "Arts. 36, 65 y 70", "orden": 60, "activo": true},
+  {"clave": "traslado", "nombre": "Traslado", "categoria": "servicio", "por_seccion": false, "unidad": "servicio", "fundamento": "Arts. 36 y 65", "orden": 70, "activo": true},
+  {"clave": "obra_lapida", "nombre": "Colocación de lápida o placa", "categoria": "obra", "por_seccion": false, "unidad": "permiso", "fundamento": "Arts. 51, 52, 55 y 65", "orden": 80, "activo": true},
+  {"clave": "obra_monumento", "nombre": "Construcción de monumento", "categoria": "obra", "por_seccion": false, "unidad": "permiso", "fundamento": "Arts. 51, 52, 56 y 65", "orden": 90, "activo": true},
+  {"clave": "obra_capilla", "nombre": "Construcción de capilla u oratorio", "categoria": "obra", "por_seccion": false, "unidad": "permiso", "fundamento": "Arts. 51, 52, 56 y 65", "orden": 100, "activo": true},
+  {"clave": "obra_rehabilitacion", "nombre": "Rehabilitación o mejoramiento", "categoria": "obra", "por_seccion": false, "unidad": "permiso", "fundamento": "Arts. 59 y 65", "orden": 110, "activo": true},
+  {"clave": "obra_retiro", "nombre": "Retiro o demolición", "categoria": "obra", "por_seccion": false, "unidad": "permiso", "fundamento": "Arts. 59 y 65", "orden": 120, "activo": true},
+  {"clave": "copia_certificada_titulo", "nombre": "Copia certificada de título", "categoria": "documento", "por_seccion": false, "unidad": "copia", "fundamento": "Art. 17, fr. XX", "orden": 130, "activo": false}
+]

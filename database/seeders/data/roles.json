@@ -1,0 +1,56 @@
+[
+  {
+    "clave": "administrador",
+    "nombre": "Administración del sistema",
+    "descripcion": "Da de alta usuarios, asigna roles y configura catálogos. No opera trámites.",
+    "permisos": ["tramites.ver", "catalogos.inventario", "catalogos.tabulador", "catalogos.reglas", "catalogos.firmantes", "reportes.ver", "bitacora.ver", "administracion.usuarios"]
+  },
+  {
+    "clave": "ventanilla",
+    "nombre": "Ventanilla",
+    "descripcion": "Atiende al público: captura trámites, recibe documentos, registra testigos, comparecencias, cotejo y recibos de pago.",
+    "permisos": ["tramites.ver", "tramites.capturar", "tramites.registrar_pagos", "inhumados.ver_causa", "inhumados.corregir"]
+  },
+  {
+    "clave": "encargado_panteones",
+    "nombre": "Encargado de Panteones",
+    "descripcion": "Emite responsivas, publica en el lote y autoriza inhumaciones, exhumaciones y obras (art. 21).",
+    "permisos": ["tramites.ver", "tramites.capturar", "tramites.emitir_documentos", "tramites.publicar", "tramites.rechazar", "tramites.autorizar.inhumacion", "tramites.autorizar.exhumacion", "tramites.autorizar.construccion", "inhumados.ver_causa", "inhumados.corregir", "catalogos.inventario", "reportes.ver"]
+  },
+  {
+    "clave": "secretaria_ayuntamiento",
+    "nombre": "Secretaría del Ayuntamiento",
+    "descripcion": "Publica en estrados y autoriza y firma los títulos (arts. 18 y 24).",
+    "permisos": ["tramites.ver", "tramites.publicar", "tramites.rechazar", "tramites.autorizar.adquisicion", "tramites.autorizar.regularizacion", "reportes.ver"]
+  },
+  {
+    "clave": "edil_ramo",
+    "nombre": "Edil del Ramo",
+    "descripcion": "Supervisa y consulta trámites e informes (art. 17).",
+    "permisos": ["tramites.ver", "reportes.ver"]
+  },
+  {
+    "clave": "tesoreria",
+    "nombre": "Tesorería",
+    "descripcion": "Captura las cuotas del tabulador y puede registrar recibos de pago (art. 19).",
+    "permisos": ["tramites.ver", "tramites.registrar_pagos", "catalogos.tabulador", "reportes.ver"]
+  },
+  {
+    "clave": "direccion_servicios",
+    "nombre": "Dirección de Servicios Municipales",
+    "descripcion": "Supervisa el servicio de panteones y su inventario (art. 20).",
+    "permisos": ["tramites.ver", "catalogos.inventario", "reportes.ver"]
+  },
+  {
+    "clave": "obras_publicas",
+    "nombre": "Obras Públicas y Desarrollo Urbano",
+    "descripcion": "Consulta los permisos de construcción ligados a su autorización (arts. 51 y 52).",
+    "permisos": ["tramites.ver"]
+  },
+  {
+    "clave": "juridico_contraloria",
+    "nombre": "Asuntos Jurídicos y Contraloría",
+    "descripcion": "Sólo consulta, incluida la bitácora de cambios (art. 21, fr. XXV).",
+    "permisos": ["tramites.ver", "reportes.ver", "bitacora.ver", "inhumados.ver_causa"]
+  }
+]

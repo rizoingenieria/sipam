@@ -1,0 +1,340 @@
+/*
+ * Estilos de SIPAM sobre Filament 4. CSS simple: no requiere Node ni compilar.
+ * Se publica con `php artisan filament:assets`.
+ * Paleta tomada del logo (vino) y de la imagen de acceso (crema y dorado); los mismos valores
+ * están en App\Filament\Support\Paleta, que alimenta los colores de Filament.
+ * Las vistas propias usan estas variables (var(--sp-…)) en vez de colores escritos a mano.
+ */
+
+:root {
+  --sp-paper: #faf3ec;
+  --sp-sheet: #fffcf9;
+  --sp-field: #ffffff;
+  --sp-ink: #2b1f22;
+  --sp-ink-soft: #5e5256;
+  --sp-rule: #e8d9cc;
+  --sp-rule-strong: #cdb5a3;
+  --sp-track: #f3e8de;
+  --sp-vino: #7a1029;
+  --sp-vino-strong: #5f0b1f;
+  --sp-vino-tint: #f4e1e4;
+  --sp-guide: #2e7d5b;
+  --sp-caution: #8a6408;
+  --sp-caution-line: #d8bf7f;
+  --sp-alert: #c2410c;
+  --sp-radius-sheet: 14px;
+  --sp-radius-control: 8px;
+  --sp-focus-ring: 0 0 0 3px rgb(122 16 41 / 0.2);
+  --sp-shadow: 43 31 34;
+}
+
+/* Texto base de 17 px (legible para todos). Filament mide en rem, así que todo escala con él. */
+html {
+  font-size: 17px;
+}
+
+body,
+.fi-body {
+  background: var(--sp-paper);
+  color: var(--sp-ink);
+}
+
+::selection {
+  background: var(--sp-vino-tint);
+}
+
+/* ── Estructura: barra lateral en hoja, contenido sobre papel ─────────────── */
+.fi-sidebar,
+.fi-sidebar-header,
+.fi-topbar nav {
+  background: var(--sp-sheet);
+}
+
+.fi-sidebar {
+  border-inline-end: 1px solid var(--sp-rule);
+}
+
+/* Elemento activo del menú: negritas y una barra vino de 3 px a su izquierda. */
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn {
+  background: transparent;
+  position: relative;
+}
+
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0.25rem;
+  top: 50%;
+  width: 3px;
+  height: 1.25rem;
+  border-radius: 2px;
+  background: var(--sp-vino);
+  transform: translateY(-50%);
+}
+
+.fi-sidebar-item.fi-active .fi-sidebar-item-label {
+  font-weight: 700;
+  color: var(--sp-ink);
+}
+
+.fi-sidebar-item-btn:hover {
+  background: var(--sp-paper);
+}
+
+/* ── Hojas: secciones, tablas, ventanas, widgets ──────────────────────────── */
+.fi-section,
+.fi-ta-ctn,
+.fi-wi-stats-overview-stat,
+.fi-fo-repeater-item,
+.fi-in-repeatable-item {
+  background: var(--sp-sheet);
+  border-radius: var(--sp-radius-sheet);
+  box-shadow: none;
+  border: 1px solid var(--sp-rule);
+  --tw-ring-shadow: 0 0 #0000;
+}
+
+.fi-modal-window {
+  background: var(--sp-sheet);
+  border-radius: var(--sp-radius-sheet);
+  border: 1px solid var(--sp-rule);
+  box-shadow: 0 30px 60px -30px rgb(var(--sp-shadow) / 0.45);
+}
+
+.fi-modal-close-overlay {
+  background: rgb(var(--sp-shadow) / 0.3);
+  backdrop-filter: blur(2px);
+}
+
+.fi-dropdown-panel {
+  background: var(--sp-sheet);
+  border: 1px solid var(--sp-rule);
+  border-radius: var(--sp-radius-control);
+  box-shadow: 0 18px 40px -20px rgb(var(--sp-shadow) / 0.45);
+}
+
+/* Las tablas no llevan franjas; los renglones separan. */
+.fi-ta-row:nth-child(even) {
+  background: transparent;
+}
+
+/* ── Controles: radio de 8 px, borde de renglón, foco vino ───────────────── */
+.fi-btn,
+.fi-input-wrp,
+.fi-select-input,
+.fi-badge,
+.fi-dropdown-list-item,
+.fi-fo-file-upload .filepond--panel-root {
+  border-radius: var(--sp-radius-control);
+}
+
+.fi-badge {
+  border-radius: 999px;
+}
+
+.fi-input-wrp {
+  background: var(--sp-field);
+  box-shadow: none;
+  border: 1px solid var(--sp-rule);
+  --tw-ring-shadow: 0 0 #0000;
+}
+
+.fi-input-wrp:hover {
+  border-color: var(--sp-rule-strong);
+}
+
+.fi-input-wrp:focus-within {
+  border-color: var(--sp-vino);
+  box-shadow: var(--sp-focus-ring);
+}
+
+.fi-fo-field-label-content,
+.fi-fo-field-wrp-label {
+  font-weight: 700;
+  color: var(--sp-ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--sp-vino);
+  outline-offset: 3px;
+}
+
+/* Dentro de un campo el anillo lo dibuja el recuadro (.fi-input-wrp:focus-within); un segundo contorno se encimaba. */
+.fi-input-wrp :focus-visible {
+  outline: none;
+}
+
+/* Botón presionado: escala 98 %. */
+.fi-btn:active {
+  transform: scale(0.98);
+}
+
+/* ── Encabezado de página ─────────────────────────────────────────────────── */
+.fi-header-heading {
+  font-size: 2.2rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.fi-header-subheading {
+  max-width: 62ch;
+  color: var(--sp-ink-soft);
+  text-wrap: pretty;
+}
+
+/* ── Movimiento: breve y apagable ────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Ajustes de la revisión visual ────────────────────────────────────────── */
+/* Sin asterisco rojo: el rojo es sólo para errores. Los opcionales dicen «Opcional». */
+.fi-fo-field-label-required-mark {
+  display: none;
+}
+
+/* Barra superior en hoja, no en blanco. */
+.fi-topbar,
+.fi-topbar > nav {
+  background: var(--sp-sheet);
+}
+
+.fi-topbar {
+  border-block-end: 1px solid var(--sp-rule);
+}
+
+/* ── «Qué sigue» del expediente (entrega 6) ───────────────────────────────── */
+/* Es lo más importante de la pantalla: título grande y texto al tamaño normal. */
+.fi-callout-heading {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--sp-ink);
+}
+
+.fi-callout-description {
+  font-size: 1rem;
+  color: var(--sp-ink);
+}
+
+.fi-callout-footer {
+  margin-top: 0.5rem;
+}
+
+/* ── Pantalla de acceso ───────────────────────────────────────────────────── */
+/* Sólo aplica donde está la marca de acceso (vista filament/acceso/marca). */
+.fi-simple-layout:has(.sp-acceso-marca) {
+  position: relative;
+  min-height: 100dvh;
+  background-color: var(--sp-paper);
+  background-image: var(--sp-acceso-fondo);
+  background-size: cover;
+  background-position: center right;
+  background-repeat: no-repeat;
+}
+
+.sp-acceso-marca {
+  position: absolute;
+  top: clamp(1.5rem, 6vh, 4.5rem);
+  left: clamp(1.5rem, 5vw, 5.5rem);
+  z-index: 1;
+}
+
+.sp-acceso-marca img {
+  display: block;
+  width: clamp(240px, 30vw, 420px);
+  height: auto;
+}
+
+.fi-simple-layout:has(.sp-acceso-marca) .fi-simple-main {
+  max-width: 32rem;
+  padding: 2.75rem 2.5rem 2.25rem;
+  background: rgb(255 255 255 / 0.94);
+  border: 1px solid rgb(255 255 255 / 0.8);
+  border-radius: 24px;
+  box-shadow:
+    0 2px 6px rgb(var(--sp-shadow) / 0.06),
+    0 40px 80px -40px rgb(var(--sp-shadow) / 0.4);
+  backdrop-filter: blur(6px);
+}
+
+/* El encabezado queda para lectores de pantalla: la tarjeta sólo muestra campos y botón. */
+.fi-simple-layout:has(.sp-acceso-marca) .fi-simple-header {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.fi-simple-layout:has(.sp-acceso-marca) .fi-input-wrp {
+  border-radius: 12px;
+  border-color: var(--sp-rule-strong);
+}
+
+/* Ícono dentro del campo, sin separador, como en el diseño; el ojo de la contraseña igual. */
+.fi-simple-layout:has(.sp-acceso-marca) .fi-input-wrp-prefix {
+  padding-inline-start: 1.1rem;
+}
+
+.fi-simple-layout:has(.sp-acceso-marca) .fi-input-wrp-suffix {
+  border-inline-start: 0;
+  padding-inline-end: 0.5rem;
+}
+
+.fi-simple-layout:has(.sp-acceso-marca) .fi-input-wrp-prefix .fi-icon,
+.fi-simple-layout:has(.sp-acceso-marca) .fi-input-wrp-suffix .fi-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.fi-simple-layout:has(.sp-acceso-marca) .fi-input {
+  padding-block: 1rem;
+  padding-inline-start: 0.85rem;
+  font-size: 1.15rem;
+}
+
+.fi-simple-layout:has(.sp-acceso-marca) .fi-input::placeholder {
+  color: var(--sp-ink-soft);
+  opacity: 1;
+}
+
+.fi-simple-layout:has(.sp-acceso-marca) .fi-btn {
+  min-height: 3.5rem;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.sp-acceso-ayuda {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--sp-ink-soft);
+}
+
+/* Teléfono o ventana angosta: el logo arriba y centrado, la tarjeta debajo. */
+@media (max-width: 900px) {
+  .sp-acceso-marca {
+    position: static;
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1.5rem 0;
+  }
+
+  .sp-acceso-marca img {
+    width: min(78vw, 340px);
+  }
+
+  .fi-simple-layout:has(.sp-acceso-marca) .fi-simple-main {
+    padding: 2rem 1.5rem 1.75rem;
+  }
+}

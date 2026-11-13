@@ -1,0 +1,11 @@
+[
+  {"clave": "presidente_municipal", "nombre": "Presidente Municipal", "firma_documentos": true, "orden": 10},
+  {"clave": "sindico", "nombre": "Síndico", "firma_documentos": true, "orden": 20},
+  {"clave": "secretario_ayuntamiento", "nombre": "Secretario del Ayuntamiento", "firma_documentos": true, "orden": 30},
+  {"clave": "edil_ramo", "nombre": "Edil del Ramo (Comisión de Registro Civil, Panteones y Reclutamiento)", "firma_documentos": true, "orden": 40},
+  {"clave": "tesorero", "nombre": "Tesorero Municipal", "firma_documentos": false, "orden": 50},
+  {"clave": "director_servicios_municipales", "nombre": "Director de Servicios Municipales", "firma_documentos": true, "orden": 60},
+  {"clave": "encargado_panteones", "nombre": "Encargado de Panteones", "firma_documentos": true, "orden": 70},
+  {"clave": "oficial_registro_civil", "nombre": "Oficial del Registro Civil", "firma_documentos": false, "orden": 80},
+  {"clave": "director_obras_publicas", "nombre": "Director de Obras Públicas", "firma_documentos": false, "orden": 90}
+]

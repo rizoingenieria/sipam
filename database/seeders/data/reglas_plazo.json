@@ -1,0 +1,67 @@
+[
+  {
+    "clave": "sanitario-menores-15",
+    "descripcion": "Plazo sanitario para quien falleció con menos de 15 años",
+    "motivo": null,
+    "regimen_clave": null,
+    "edad_minima": null,
+    "edad_maxima": 14,
+    "solo_panteon_saturado": false,
+    "anios_minimos": 5,
+    "comparacion": "al_menos",
+    "fundamento": "Art. 67 del Reglamento de la Ley General de Salud en materia de control sanitario de la disposición de órganos, tejidos y cadáveres de seres humanos; arts. 29 y 38 del Reglamento de Panteones",
+    "vigente_desde": "2023-05-01"
+  },
+  {
+    "clave": "sanitario-15-o-mas",
+    "descripcion": "Plazo sanitario para quien falleció con 15 años o más",
+    "motivo": null,
+    "regimen_clave": null,
+    "edad_minima": 15,
+    "edad_maxima": null,
+    "solo_panteon_saturado": false,
+    "anios_minimos": 6,
+    "comparacion": "al_menos",
+    "fundamento": "Art. 67 del Reglamento de la Ley General de Salud en materia de control sanitario de la disposición de órganos, tejidos y cadáveres de seres humanos; arts. 29 y 38 del Reglamento de Panteones",
+    "vigente_desde": "2023-05-01"
+  },
+  {
+    "clave": "temporalidad-minima",
+    "descripcion": "Fosa bajo régimen de temporalidad mínima",
+    "motivo": null,
+    "regimen_clave": "temporalidad",
+    "edad_minima": null,
+    "edad_maxima": null,
+    "solo_panteon_saturado": false,
+    "anios_minimos": 7,
+    "comparacion": "al_menos",
+    "fundamento": "Art. 38",
+    "vigente_desde": "2023-05-01"
+  },
+  {
+    "clave": "traslado-familiares",
+    "descripcion": "Familiares que trasladan los restos para reinhumarlos en otro lugar",
+    "motivo": "traslado",
+    "regimen_clave": null,
+    "edad_minima": null,
+    "edad_maxima": null,
+    "solo_panteon_saturado": false,
+    "anios_minimos": 7,
+    "comparacion": "al_menos",
+    "fundamento": "Art. 41, fr. III",
+    "vigente_desde": "2023-05-01"
+  },
+  {
+    "clave": "reutilizacion-panteon-saturado",
+    "descripcion": "Reutilizar una fosa con título cuando el panteón está saturado",
+    "motivo": "reutilizacion_fosa",
+    "regimen_clave": null,
+    "edad_minima": null,
+    "edad_maxima": null,
+    "solo_panteon_saturado": true,
+    "anios_minimos": 6,
+    "comparacion": "mas_de",
+    "fundamento": "Art. 105",
+    "vigente_desde": "2023-05-01"
+  }
+]

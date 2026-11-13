@@ -1,0 +1,12 @@
+[
+  {"clave": "hijo", "nombre": "Hijo o hija", "linea": "recta", "grado": 1, "prelacion": 1, "puede_autorizar": true},
+  {"clave": "conyuge", "nombre": "Cónyuge", "linea": "conyugal", "grado": null, "prelacion": 2, "puede_autorizar": true},
+  {"clave": "nieto", "nombre": "Nieto o nieta", "linea": "recta", "grado": 2, "prelacion": 3, "puede_autorizar": true},
+  {"clave": "padre", "nombre": "Padre o madre", "linea": "recta", "grado": 1, "prelacion": 4, "puede_autorizar": true},
+  {"clave": "hermano", "nombre": "Hermano o hermana", "linea": "colateral", "grado": 2, "prelacion": 5, "puede_autorizar": true},
+  {"clave": "abuelo", "nombre": "Abuelo o abuela", "linea": "recta", "grado": 2, "prelacion": 6, "puede_autorizar": true},
+  {"clave": "bisnieto", "nombre": "Bisnieto o bisnieta", "linea": "recta", "grado": 3, "prelacion": 7, "puede_autorizar": true},
+  {"clave": "sobrino", "nombre": "Sobrino o sobrina", "linea": "colateral", "grado": 3, "prelacion": 8, "puede_autorizar": true},
+  {"clave": "tio", "nombre": "Tío o tía", "linea": "colateral", "grado": 3, "prelacion": 9, "puede_autorizar": true},
+  {"clave": "primo", "nombre": "Primo o prima", "linea": "colateral", "grado": 4, "prelacion": 10, "puede_autorizar": true}
+]
