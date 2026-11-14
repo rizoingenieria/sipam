@@ -5,7 +5,7 @@
 #   cd /var/www/sipam && ./scripts/actualizar.sh
 #
 # Pide la contraseña de panteon_migra (o tómala de la variable MIGRA_PASS) y hace, en orden:
-# respaldo, git pull, dependencias, mantenimiento, migraciones, permisos de la base, estilos y caché.
+# respaldo, mantenimiento, git pull, dependencias, migraciones, permisos de la base, estilos y caché, reapertura.
 # Si algo falla, se detiene y lo dice; el respaldo del paso 1 queda en RESPALDOS_RUTA.
 #
 # Supone: código propiedad de tu usuario, storage y bootstrap/cache de www-data (guía de producción),
@@ -50,15 +50,21 @@ trap al_fallar ERR
 paso "1/7 Respaldo de la base"
 como_web panteones:respaldar --sin-archivos
 
-paso "2/7 Código nuevo (git pull)"
-git pull --ff-only
-
-paso "3/7 Dependencias"
-"$PHP" "$COMPOSER" install --no-dev --optimize-autoloader --no-interaction
-
-paso "4/7 Modo mantenimiento"
+paso "2/7 Modo mantenimiento (el personal ve «Estamos actualizando el sistema»)"
 como_web down --retry=30
 en_mantenimiento=1
+
+paso "3/7 Código nuevo (git pull)"
+git pull --ff-only
+
+paso "4/7 Dependencias"
+# Composer corre con tu usuario (vendor es tuyo) y sin sus scripts: los scripts de Laravel escriben en
+# bootstrap/cache y storage/logs, que son de www-data. Esa parte se hace enseguida como www-data.
+"$PHP" "$COMPOSER" install --no-dev --optimize-autoloader --no-interaction --no-scripts
+# Lo mismo que harían esos scripts: borrar la lista de paquetes en caché (sin arrancar Laravel, que fallaría
+# si la lista menciona paquetes que ya no están) y volver a descubrirlos.
+sudo -u "$WEB" rm -f bootstrap/cache/packages.php bootstrap/cache/services.php
+como_web package:discover
 
 paso "5/7 Base de datos"
 # Sin caché de configuración, para que tomen efecto las credenciales de migración.
