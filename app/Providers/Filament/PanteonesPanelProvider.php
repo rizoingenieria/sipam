@@ -9,6 +9,7 @@ use App\Filament\Pages\Inicio;
 use App\Filament\Support\Paleta;
 use App\Http\Controllers\DocumentosController;
 use App\Http\Controllers\ReportesController;
+use App\Http\Controllers\VerArchivoAcervo;
 use App\Http\Controllers\VerArchivoTramite;
 use App\Http\Middleware\CabecerasSeguridad;
 use App\Http\Middleware\ExigirDosPasos;
@@ -93,6 +94,8 @@ class PanteonesPanelProvider extends PanelProvider
                 Route::middleware(ExigirDosPasos::class)->group(function (): void {
                     // Evidencias de los trámites: disco privado, sólo con sesión iniciada.
                     Route::get('archivos/{archivo}', VerArchivoTramite::class)->name('archivo');
+                    // Originales escaneados del acervo histórico (disco «acervo»).
+                    Route::get('acervo/archivo/{archivo}', VerArchivoAcervo::class)->name('acervo.archivo');
                     // Documentos oficiales en PDF, generados al momento con los datos guardados.
                     Route::prefix('documentos')->name('documentos.')->controller(DocumentosController::class)->group(function (): void {
                         Route::get('orden-de-pago/{orden}', 'orden')->name('orden');

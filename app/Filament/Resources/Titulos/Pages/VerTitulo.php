@@ -8,6 +8,7 @@ use App\Enums\TipoTramite;
 use App\Filament\Resources\Finados\FinadoResource;
 use App\Filament\Resources\Titulos\TituloResource;
 use App\Filament\Resources\Tramites\TramiteResource;
+use App\Filament\Support\AcervoEnFicha;
 use App\Filament\Support\Ficha;
 use App\Services\Documentos\DocumentosDelTramite;
 use App\Support\Formato;
@@ -65,6 +66,7 @@ class VerTitulo extends ViewRecord
             Section::make('Sepultados en el espacio')
                 ->columnSpanFull()
                 ->schema([Text::make(fn () => $this->sepultados())]),
+            AcervoEnFicha::seccion($this->record, 'titulo'),
         ]);
     }
 

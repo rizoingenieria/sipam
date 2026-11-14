@@ -15,5 +15,10 @@ Schedule::command('panteones:caducar-tramites')->dailyAt('01:10')->withoutOverla
 // Respaldo de la base y de los archivos de los trámites, con limpieza de los antiguos.
 Schedule::command('panteones:respaldar')->dailyAt('02:30')->withoutOverlapping();
 
+// Acervo histórico: copia de los archivos nuevos (aparte, porque pesan mucho y no cambian) y revisión
+// de que sigan intactos (cada noche los que no se han revisado en 30 días: todo el acervo, una vez al mes).
+Schedule::command('panteones:respaldar-acervo')->dailyAt('03:15')->withoutOverlapping();
+Schedule::command('panteones:verificar-acervo')->dailyAt('04:00')->withoutOverlapping();
+
 // Latido: permite a «panteones:verificar-instalacion» saber que el cron sí está corriendo.
 Schedule::call(fn () => Cache::forever('panteones:latido', now()->toIso8601String()))->everyFiveMinutes()->name('latido');

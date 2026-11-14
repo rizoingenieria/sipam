@@ -3,12 +3,15 @@
 namespace App\Filament\Resources\Espacios;
 
 use App\Enums\EstadoTitulo;
+use App\Enums\Permiso;
 use App\Enums\TipoEspacio;
+use App\Filament\Resources\Acervo\AcervoResource;
 use App\Filament\Resources\Espacios\Pages\ManageEspacios;
 use App\Filament\Resources\Recurso;
 use App\Models\Espacio;
 use App\Models\Panteon;
 use App\Models\Seccion;
+use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -133,6 +136,11 @@ class EspacioResource extends Recurso
             ->emptyStateHeading('No hay espacios con esos datos')
             ->emptyStateDescription('Revisa los filtros. Para dar de alta muchos espacios a la vez, abre el panteón y usa «Generar lotes» en la sección.')
             ->recordActions([
+                // Documentos escaneados del espacio (acervo histórico), para quien puede consultarlos.
+                Action::make('acervo')->label(fn (Espacio $record) => 'Acervo'.(($n = $record->documentosAcervo()->count()) ? " ({$n})" : ''))
+                    ->icon(Heroicon::OutlinedArchiveBox)->color('gray')
+                    ->url(fn (Espacio $record) => AcervoResource::getUrl('index', ['espacio' => $record->id]))
+                    ->visible(fn () => (bool) auth()->user()?->puede(Permiso::AcervoConsultar)),
                 EditAction::make()->label('Editar')
                     ->modalHeading(fn (Espacio $record) => "Espacio {$record->clave_completa}")
                     ->modalSubmitActionLabel('Guardar espacio')

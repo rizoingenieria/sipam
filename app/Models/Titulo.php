@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\EstadoTitulo;
 use App\Enums\OrigenTitulo;
 use App\Enums\RolTitularidad;
+use App\Models\Concerns\TieneAcervo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Titulo extends Model
 {
+    use TieneAcervo;
+
     protected $table = 'titulos';
 
     protected $fillable = [

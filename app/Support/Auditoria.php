@@ -2,9 +2,11 @@
 
 namespace App\Support;
 
+use App\Models\ArchivoAcervo;
 use App\Models\Cargo;
 use App\Models\ConceptoCobro;
 use App\Models\Cuota;
+use App\Models\DocumentoAcervo;
 use App\Models\EntePublico;
 use App\Models\Espacio;
 use App\Models\Firmante;
@@ -20,6 +22,7 @@ use App\Models\ReglaPlazo;
 use App\Models\Requisito;
 use App\Models\Rol;
 use App\Models\Seccion;
+use App\Models\TipoDocumentoAcervo;
 use App\Models\Titulo;
 use App\Models\Tramite;
 use App\Models\TramiteArchivo;
@@ -61,6 +64,9 @@ final class Auditoria
         TramiteParticipante::class => 'Persona en trámite',
         OrdenPago::class => 'Orden de pago',
         TramiteArchivo::class => 'Archivo del trámite',
+        DocumentoAcervo::class => 'Documento del acervo',
+        ArchivoAcervo::class => 'Archivo del acervo',
+        TipoDocumentoAcervo::class => 'Tipo de documento del acervo',
     ];
 
     /** Campos que nunca se anotan (además de contraseñas, tokens y fechas de sistema). */
@@ -103,6 +109,8 @@ final class Auditoria
             $m instanceof TramiteRequisito => ($m->requisito?->documento ?? '').' · '.($m->tramite?->folio ?? ''),
             $m instanceof TramiteParticipante => ($m->persona?->nombre_completo ?? '').' · '.($m->tramite?->folio ?? ''),
             $m instanceof TramiteArchivo => $m->nombre_original.' · '.($m->tramite?->folio ?? ''),
+            $m instanceof ArchivoAcervo => $m->nombre_original.' · '.($m->documento?->folio ?? ''),
+            $m instanceof DocumentoAcervo => $m->folio.' · '.$m->titulo,
             $m instanceof Espacio => $m->lote ? $m->clave_completa : '#'.$m->getKey(),
             $m instanceof Lote => 'lote '.$m->numero.($m->seccion ? ', sección '.$m->seccion->clave : ''),
             $m instanceof Firmante => ($m->nombre ?? '').' · '.($m->cargo?->nombre ?? ''),

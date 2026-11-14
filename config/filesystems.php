@@ -38,6 +38,16 @@ return [
             'report' => false,
         ],
 
+        // Acervo histórico: originales escaneados. Carpeta propia para poder llevarla a un disco adicional
+        // (ACERVO_RUTA) sin mover nada más. Privada: sólo se entrega con sesión y permiso.
+        'acervo' => [
+            'driver' => 'local',
+            'root' => env('ACERVO_RUTA', storage_path('app/acervo')),
+            'serve' => false,
+            'throw' => true,
+            'report' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

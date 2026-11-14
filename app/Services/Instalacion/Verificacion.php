@@ -2,6 +2,7 @@
 
 namespace App\Services\Instalacion;
 
+use App\Models\ArchivoAcervo;
 use App\Services\Diagnostico\DiagnosticoConfiguracion;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -79,6 +80,25 @@ final class Verificacion
         $add('Respaldo reciente', $reciente ? 'ok' : 'aviso', $reciente
             ? "Último respaldo: {$ultimo}. Copia los respaldos a otro equipo al menos cada semana."
             : ($ultimo ? "El último respaldo es de {$ultimo}. Revisa el cron y php artisan panteones:respaldar." : 'Aún no hay respaldos. Ejecuta php artisan panteones:respaldar para probar.'));
+
+        // ── Acervo histórico ──
+        $carpetaAcervo = (string) config('filesystems.disks.acervo.root');
+        File::ensureDirectoryExists($carpetaAcervo);
+        $add('Carpeta del acervo histórico', is_writable($carpetaAcervo) ? 'ok' : 'falla', is_writable($carpetaAcervo)
+            ? $carpetaAcervo.' (libre: '.round(disk_free_space($carpetaAcervo) / 1073741824, 1).' GB).'
+            : "El servidor web no puede escribir en {$carpetaAcervo}. Revisa ACERVO_RUTA y el dueño de la carpeta.");
+        $hayAcervo = ArchivoAcervo::query()->exists();
+        $copiaAcervo = Cache::get('panteones:respaldo-acervo');
+        $copiaReciente = $copiaAcervo && Carbon::parse($copiaAcervo)->gt(now()->subHours(36));
+        $add('Respaldo del acervo', ! $hayAcervo || $copiaReciente ? 'ok' : 'aviso', match (true) {
+            ! $hayAcervo => 'Aún no hay documentos en el acervo.',
+            $copiaReciente => 'Última copia: '.Carbon::parse($copiaAcervo)->diffForHumans().' en '.config('respaldos.acervo_ruta').'.',
+            default => 'No hay copia reciente del acervo. Revisa el cron y php artisan panteones:respaldar-acervo.',
+        });
+        $danados = $hayAcervo ? ArchivoAcervo::where('integro', false)->count() : 0;
+        $add('Integridad del acervo', $danados === 0 ? 'ok' : 'falla', $danados === 0
+            ? 'Ningún archivo ha cambiado desde que se subió.'
+            : "{$danados} archivos ya no coinciden con su original. Ejecuta php artisan panteones:verificar-acervo --todos y recupéralos del respaldo del acervo.");
 
         // ── Configuración del sistema ──
         $bloqueantes = app(DiagnosticoConfiguracion::class)->revisar()->filter(fn ($p) => $p->esBloqueante())->count();

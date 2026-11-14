@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use App\Listeners\AnotarAccesos;
+use App\Models\Espacio;
+use App\Models\Inhumado;
+use App\Models\Titulo;
 use App\Support\Auditoria;
 use Carbon\Carbon;
 use Filament\Actions\Action;
@@ -12,6 +15,7 @@ use Filament\Tables\Table;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Number;
 use Illuminate\Support\ServiceProvider;
@@ -25,6 +29,14 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Subidas: Livewire trae un tope fijo de 12 MB que ignoraba los parámetros de tamaño de la pantalla.
+        // El tope real es el del servidor (config/archivos.php); cada pantalla valida además su parámetro.
+        config(['livewire.temporary_file_upload.rules' => ['required', 'file', 'max:'.(config('archivos.subida_maxima_mb') * 1024)]]);
+        config(['livewire.temporary_file_upload.max_upload_time' => 30]); // minutos: un libro escaneado por una red lenta
+
+        // Vínculos del acervo histórico: alias estables en la base, no nombres de clase.
+        Relation::morphMap(['espacio' => Espacio::class, 'titulo' => Titulo::class, 'inhumado' => Inhumado::class]);
+
         // Bitácora: altas, cambios y bajas de los registros que importan, y entradas al sistema.
         Auditoria::registrar();
         Event::listen(Login::class, [AnotarAccesos::class, 'entrada']);

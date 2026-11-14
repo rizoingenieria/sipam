@@ -5,12 +5,15 @@ namespace App\Models;
 use App\Enums\EstadoInhumado;
 use App\Enums\Permiso;
 use App\Enums\Sexo;
+use App\Models\Concerns\TieneAcervo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Inhumado extends Model
 {
+    use TieneAcervo;
+
     protected $table = 'inhumados';
 
     protected $fillable = [

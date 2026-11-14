@@ -29,6 +29,11 @@ enum Permiso: string implements HasDescription, HasLabel
     case InhumadosVerCausa = 'inhumados.ver_causa';
     case InhumadosCorregir = 'inhumados.corregir';
 
+    // Acervo histórico
+    case AcervoConsultar = 'acervo.consultar';
+    case AcervoCargar = 'acervo.cargar';
+    case AcervoRetirar = 'acervo.retirar';
+
     // Configuración
     case CatalogosInventario = 'catalogos.inventario';
     case CatalogosTabulador = 'catalogos.tabulador';
@@ -56,6 +61,9 @@ enum Permiso: string implements HasDescription, HasLabel
             self::AutorizarConstruccion => 'Autorizar permisos de construcción',
             self::InhumadosVerCausa => 'Ver la causa de fallecimiento',
             self::InhumadosCorregir => 'Corregir datos de finados',
+            self::AcervoConsultar => 'Consultar el acervo histórico',
+            self::AcervoCargar => 'Subir documentos al acervo histórico',
+            self::AcervoRetirar => 'Retirar documentos del acervo histórico',
             self::CatalogosInventario => 'Administrar panteones, secciones, lotes y espacios',
             self::CatalogosTabulador => 'Capturar las cuotas del tabulador',
             self::CatalogosReglas => 'Editar plazos, requisitos y parámetros',
@@ -82,6 +90,9 @@ enum Permiso: string implements HasDescription, HasLabel
             self::AutorizarConstruccion => 'Concluir el permiso de construcción o remodelación (art. 59).',
             self::InhumadosVerCausa => 'Es un dato personal sensible. Dalo sólo a quien lo necesita para su trabajo.',
             self::InhumadosCorregir => 'Por ejemplo, capturar la edad al fallecer que falta en un registro antiguo.',
+            self::AcervoConsultar => 'Ver y descargar los documentos originales escaneados.',
+            self::AcervoCargar => 'Registrar documentos escaneados, agregarles páginas y ligarlos a espacios, títulos y finados.',
+            self::AcervoRetirar => 'Retirar un documento subido por error, escribiendo el motivo. El archivo no se borra.',
             self::CatalogosInventario => 'Dar de alta y corregir panteones, secciones, lotes y espacios.',
             self::CatalogosTabulador => 'Registrar los importes que aprueba el Cabildo cada año (art. 69).',
             self::CatalogosReglas => 'Cambiar plazos de exhumación, documentos que se piden y parámetros del reglamento.',
@@ -98,6 +109,7 @@ enum Permiso: string implements HasDescription, HasLabel
             str_starts_with($this->value, 'tramites.autorizar.') => 'Autorizaciones',
             str_starts_with($this->value, 'tramites.') => 'Trámites',
             str_starts_with($this->value, 'inhumados.') => 'Registro de finados',
+            str_starts_with($this->value, 'acervo.') => 'Acervo histórico',
             str_starts_with($this->value, 'catalogos.') => 'Configuración',
             default => 'Consulta y administración',
         };

@@ -9,6 +9,7 @@ use App\Enums\Sexo;
 use App\Enums\TipoTramite;
 use App\Filament\Resources\Finados\FinadoResource;
 use App\Filament\Resources\Tramites\TramiteResource;
+use App\Filament\Support\AcervoEnFicha;
 use App\Filament\Support\Avisos;
 use App\Filament\Support\Ficha;
 use App\Models\Movimiento;
@@ -74,6 +75,7 @@ class VerFinado extends ViewRecord
                 ->description('Inhumaciones, exhumaciones y traslados registrados.')
                 ->columnSpanFull()
                 ->schema([Text::make(fn () => $this->historia())]),
+            AcervoEnFicha::seccion($this->record, 'inhumado'),
         ]);
     }
 

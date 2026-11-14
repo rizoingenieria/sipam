@@ -73,7 +73,7 @@ class ConfiguracionTest extends TestCase
 
     public function test_parametros_sembrados_y_lectura_tipada(): void
     {
-        $this->assertSame(15, Parametro::count());
+        $this->assertSame(17, Parametro::count());
         $this->assertSame(2, Parametro::entero('testigos_requeridos'));
         $this->assertSame(0.9, Parametro::decimal('monumento_altura_maxima_m'));
         $this->assertSame('INH', Parametro::texto('serie_folio_inhumacion'));
@@ -97,8 +97,8 @@ class ConfiguracionTest extends TestCase
                 $this->assertStringContainsString($esperado, $e->getMessage());
             }
         }
-        $this->assertSame(15, Parametro::count(), 'Ninguna versión inválida quedó guardada.');
-        $this->assertSame(15, Parametro::abiertas()->count(), 'La versión vigente sigue abierta.');
+        $this->assertSame(17, Parametro::count(), 'Ninguna versión inválida quedó guardada.');
+        $this->assertSame(17, Parametro::abiertas()->count(), 'La versión vigente sigue abierta.');
     }
 
     public function test_falta_un_parametro_y_el_mensaje_dice_como_resolverlo(): void

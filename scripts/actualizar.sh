@@ -71,11 +71,13 @@ paso "5/7 Base de datos"
 como_web optimize:clear
 DB_USERNAME="$MIGRA" DB_PASSWORD="$MIGRA_PASS" sudo --preserve-env=DB_USERNAME,DB_PASSWORD -u "$WEB" "$PHP" artisan migrate --force
 
-paso "6/7 Permisos de la aplicación (la bitácora sólo admite agregar)"
+paso "6/7 Permisos de la aplicación (la bitácora sólo admite agregar; el acervo no se borra)"
 mysql -h "$HOST" -P "$PORT" -u "$MIGRA" -N -e "
     SELECT CONCAT('GRANT SELECT, INSERT, UPDATE, DELETE ON \`$DB\`.\`', table_name, '\` TO ''$APP_USER_DB''@''$APP_HOST_DB'';')
-      FROM information_schema.tables WHERE table_schema = '$DB' AND table_name <> 'bitacora';
-    SELECT 'GRANT SELECT, INSERT ON \`$DB\`.\`bitacora\` TO ''$APP_USER_DB''@''$APP_HOST_DB'';';" \
+      FROM information_schema.tables WHERE table_schema = '$DB' AND table_name NOT IN ('bitacora', 'documentos_acervo', 'archivos_acervo');
+    SELECT 'GRANT SELECT, INSERT ON \`$DB\`.\`bitacora\` TO ''$APP_USER_DB''@''$APP_HOST_DB'';';
+    SELECT CONCAT('GRANT SELECT, INSERT, UPDATE ON \`$DB\`.\`', table_name, '\` TO ''$APP_USER_DB''@''$APP_HOST_DB'';')
+      FROM information_schema.tables WHERE table_schema = '$DB' AND table_name IN ('documentos_acervo', 'archivos_acervo');" \
     | mysql -h "$HOST" -P "$PORT" -u "$MIGRA"
 
 paso "7/7 Estilos, caché y reapertura"
