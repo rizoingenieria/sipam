@@ -411,7 +411,7 @@ class TramitesPanelTest extends TestCase
         $archivo = $this->gestor->adjuntarArchivo($t, $foto, TipoArchivo::Otro, $this->ventanilla);
 
         $this->get("/archivos/{$archivo->id}")->assertRedirect('/login');
-        $this->actingAs($this->usuario('administrador'))->get("/archivos/{$archivo->id}")->assertOk()
+        $this->actingAs($this->conDosPasos($this->usuario('administrador')))->get("/archivos/{$archivo->id}")->assertOk()
             ->assertHeader('Content-Type', 'image/jpeg')->assertHeader('X-Content-Type-Options', 'nosniff');
 
         $sinPermiso = $this->usuario('ventanilla');

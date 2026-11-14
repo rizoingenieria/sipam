@@ -264,8 +264,9 @@ body,
   backdrop-filter: blur(6px);
 }
 
-/* El encabezado queda para lectores de pantalla: la tarjeta sólo muestra campos y botón. */
-.fi-simple-layout:has(.sp-acceso-marca) .fi-simple-header {
+/* En el paso de correo y contraseña el encabezado queda para lectores de pantalla: la tarjeta sólo muestra
+   campos y botón. En el paso del código del celular sí se ve («Confirma que eres tú»). */
+.fi-simple-layout:has(.sp-acceso-marca):has(input[type=email]) .fi-simple-header {
   position: absolute;
   width: 1px;
   height: 1px;

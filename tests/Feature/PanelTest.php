@@ -112,14 +112,14 @@ class PanelTest extends TestCase
         (require database_path('migrations/2026_11_13_100001_renombrar_sistema_a_sipam.php'))->up();
         $this->assertSame('Panteones de Xico', EntePublico::actual()->fresh()->nombre_sistema, 'un nombre propio no se pisa');
 
-        $this->actingAs($this->usuario('administrador'))->get('/')->assertOk()->assertSee('images/sipam-logo-corto.png')->assertSee('Ayuntamiento de')->assertSee('Coatepec')
+        $this->actingAs($this->conDosPasos($this->usuario('administrador')))->get('/')->assertOk()->assertSee('images/sipam-logo-corto.png')->assertSee('Ayuntamiento de')->assertSee('Coatepec')
             ->assertDontSee('images/acceso-fondo.webp'); // el fondo es sólo de la pantalla de acceso
     }
 
     public function test_el_administrador_abre_todas_las_pantallas(): void
     {
         $seccion = $this->inventario();
-        $this->actingAs($this->usuario('administrador'));
+        $this->actingAs($this->conDosPasos($this->usuario('administrador')));
 
         foreach ([...self::PANTALLAS, '/panteones/'.$seccion->panteon_id] as $ruta) {
             $this->get($ruta)->assertOk();

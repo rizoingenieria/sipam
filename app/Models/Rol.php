@@ -10,11 +10,11 @@ class Rol extends Model
 {
     protected $table = 'roles';
 
-    protected $fillable = ['clave', 'nombre', 'descripcion', 'permisos', 'activo'];
+    protected $fillable = ['clave', 'nombre', 'descripcion', 'permisos', 'activo', 'exige_dos_pasos'];
 
     protected function casts(): array
     {
-        return ['permisos' => 'array', 'activo' => 'boolean'];
+        return ['permisos' => 'array', 'activo' => 'boolean', 'exige_dos_pasos' => 'boolean'];
     }
 
     protected static function booted(): void

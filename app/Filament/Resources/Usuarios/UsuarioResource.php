@@ -2,17 +2,21 @@
 
 namespace App\Filament\Resources\Usuarios;
 
+use App\Enums\EventoBitacora;
 use App\Filament\Resources\Recurso;
 use App\Filament\Resources\Usuarios\Pages\ManageUsuarios;
 use App\Filament\Support\Avisos;
+use App\Models\Bitacora;
 use App\Models\Rol;
 use App\Models\User;
 use App\Services\Accesos\AdministracionAccesos;
+use App\Support\Auditoria;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -73,6 +77,14 @@ class UsuarioResource extends Recurso
             ->columns([
                 TextColumn::make('name')->label('Nombre')->weight('semibold')->searchable()->description(fn (User $u) => $u->email),
                 TextColumn::make('roles.nombre')->label('Roles')->badge()->color('gray')->wrap(),
+                TextColumn::make('dos_pasos')->label('Dos pasos')->badge()
+                    ->state(fn (User $u) => $u->tieneDosPasos() ? 'Activada' : ($u->exigeDosPasos() ? 'Pendiente' : 'Sin activar'))
+                    ->color(fn (string $state) => match ($state) {
+                        'Activada' => 'success',
+                        'Pendiente' => 'warning',
+                        default => 'gray',
+                    })
+                    ->tooltip(fn (string $state) => $state === 'Pendiente' ? 'Su rol la pide: la activará la próxima vez que entre.' : null),
                 TextColumn::make('activo')->label('Estado')->badge()
                     ->formatStateUsing(fn (bool $state) => $state ? 'Activo' : 'Sin acceso')
                     ->color(fn (bool $state) => $state ? 'success' : 'gray'),
@@ -81,6 +93,7 @@ class UsuarioResource extends Recurso
                 TernaryFilter::make('activo')->label('Estado')->trueLabel('Activos')->falseLabel('Sin acceso')->placeholder('Todos')->default(true),
             ])
             ->recordActions([
+                self::quitarDosPasos(),
                 EditAction::make()
                     ->label('Editar')
                     ->modalHeading(fn (User $record) => "Editar a {$record->name}")
@@ -88,6 +101,31 @@ class UsuarioResource extends Recurso
                     ->mutateRecordDataUsing(fn (array $data, User $record): array => $data + ['rol_ids' => $record->roles()->pluck('roles.id')->all()])
                     ->using(fn (User $record, array $data, Action $action) => self::guardar($record, $data, $action)),
             ]);
+    }
+
+    /**
+     * Para quien perdió o cambió de celular y ya no tiene sus códigos de recuperación.
+     * Si su rol pide la verificación, la vuelve a configurar en cuanto entre.
+     */
+    public static function quitarDosPasos(): Action
+    {
+        return Action::make('quitarDosPasos')
+            ->label('Quitar dos pasos')
+            ->icon(Heroicon::OutlinedDevicePhoneMobile)
+            ->color('danger')
+            ->visible(fn (User $record) => $record->tieneDosPasos())
+            ->requiresConfirmation()
+            ->modalHeading(fn (User $record) => "¿Quitar la verificación en dos pasos a {$record->name}?")
+            ->modalDescription('Hazlo sólo si la persona perdió o cambió su celular y no tiene sus códigos de recuperación. Confirma primero que es ella quien lo pide. Podrá entrar sólo con su contraseña hasta que vuelva a activar el código.')
+            ->modalSubmitActionLabel('Sí, quitarla')
+            ->action(function (User $record): void {
+                // Un solo renglón claro en la bitácora en vez del cambio genérico del usuario.
+                Auditoria::sinAnotar(fn () => $record->quitarDosPasos());
+                Bitacora::anotar(EventoBitacora::Modificado, 'Quitó la verificación en dos pasos de '.$record->name.' ('.$record->email.')', $record);
+                Notification::make()->success()->title('Se quitó la verificación en dos pasos')
+                    ->body($record->exigeDosPasos() ? 'Su rol la pide: deberá activarla otra vez la próxima vez que entre.' : 'Podrá activarla otra vez desde «Mi cuenta».')
+                    ->send();
+            });
     }
 
     /** Guarda datos, roles y estado en una transacción; si deja el sistema sin administración, no guarda nada. */

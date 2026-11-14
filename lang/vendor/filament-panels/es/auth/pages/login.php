@@ -15,7 +15,11 @@ return [
     ],
     'multi_factor' => [
         'heading' => 'Confirma que eres tú',
-        'subheading' => 'Para entrar, confirma tu identidad.',
+        'subheading' => 'Abre la aplicación de códigos en tu celular y escribe el código de SIPAM.',
+        'form' => [
+            'provider' => ['label' => '¿Cómo quieres confirmar?'],
+            'actions' => ['authenticate' => ['label' => 'Entrar']],
+        ],
     ],
     'messages' => [
         'failed' => 'El correo o la contraseña no coinciden. Revísalos e inténtalo de nuevo.',

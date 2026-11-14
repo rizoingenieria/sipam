@@ -71,6 +71,8 @@ class RolResource extends Recurso
             Textarea::make('descripcion')->label('Para qué sirve')->rows(2)->maxLength(500),
             Toggle::make('activo')->label('Rol activo')->default(true)
                 ->helperText('Si lo apagas, quienes lo tienen pierden estos permisos.'),
+            Toggle::make('exige_dos_pasos')->label('Pide verificación en dos pasos')->default(false)
+                ->helperText('Quienes tengan este rol deberán activar el código del celular para entrar. Recomendado para roles que administran, autorizan o cobran.'),
             ...$grupos,
         ])->columns(1);
     }
@@ -85,6 +87,9 @@ class RolResource extends Recurso
                 // «permisos» es una lista: Filament pintaría un valor por elemento. Se resume en uno.
                 TextColumn::make('resumen_permisos')->label('Permisos')
                     ->state(fn (Rol $r) => count((array) $r->permisos).' de '.count(Permiso::cases()))->alignEnd(),
+                TextColumn::make('exige_dos_pasos')->label('Dos pasos')->badge()
+                    ->formatStateUsing(fn (bool $state) => $state ? 'Obligatoria' : 'Opcional')
+                    ->color(fn (bool $state) => $state ? 'primary' : 'gray'),
                 TextColumn::make('activo')->label('Estado')->badge()
                     ->formatStateUsing(fn (bool $state) => $state ? 'Activo' : 'Apagado')
                     ->color(fn (bool $state) => $state ? 'success' : 'gray'),

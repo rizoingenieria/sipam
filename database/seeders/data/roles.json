@@ -3,7 +3,8 @@
     "clave": "administrador",
     "nombre": "Administración del sistema",
     "descripcion": "Da de alta usuarios, asigna roles y configura catálogos. No opera trámites.",
-    "permisos": ["tramites.ver", "catalogos.inventario", "catalogos.tabulador", "catalogos.reglas", "catalogos.firmantes", "reportes.ver", "bitacora.ver", "administracion.usuarios"]
+    "permisos": ["tramites.ver", "catalogos.inventario", "catalogos.tabulador", "catalogos.reglas", "catalogos.firmantes", "reportes.ver", "bitacora.ver", "administracion.usuarios"],
+    "exige_dos_pasos": true
   },
   {
     "clave": "ventanilla",
