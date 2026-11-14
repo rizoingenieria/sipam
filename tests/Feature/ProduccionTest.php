@@ -25,6 +25,7 @@ use Database\Seeders\CatalogosSeeder;
 use Database\Seeders\DemoSeeder;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Process\PendingProcess;
 use Illuminate\Support\Carbon;
@@ -32,6 +33,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use OpenSpout\Common\Entity\Row;
@@ -353,6 +355,40 @@ class ProduccionTest extends TestCase
         $this->app['env'] = 'production';
         $this->expectExceptionMessage('no se ejecuta en producción');
         app(DemoSeeder::class)->run();
+    }
+
+    public function test_detras_del_proxy_reverso_respeta_https_y_la_ip_del_visitante(): void
+    {
+        auth()->logout();
+        Route::get('/_prueba-proxy', fn (Request $r) => [$r->isSecure(), $r->ip(), $r->getSchemeAndHttpHost() === 'https://sipam.coatepec.gob.mx']);
+        $cabeceras = ['X-Forwarded-For' => '201.141.1.20', 'X-Forwarded-Proto' => 'https', 'X-Forwarded-Host' => 'sipam.coatepec.gob.mx', 'X-Forwarded-Port' => '443'];
+
+        // Sin configurar: no se cree a nadie (nadie puede hacerse pasar por https ni falsear su IP).
+        config(['trustedproxy.proxies' => null]);
+        $this->withServerVariables(['REMOTE_ADDR' => '192.168.1.2'])->withHeaders($cabeceras)
+            ->get('http://localhost/_prueba-proxy')->assertExactJson([false, '192.168.1.2', false]);
+
+        // Con el proxy de confianza: https, la IP real y el dominio público.
+        config(['trustedproxy.proxies' => '192.168.1.2']);
+        $this->withServerVariables(['REMOTE_ADDR' => '192.168.1.2'])->withHeaders($cabeceras)
+            ->get('http://localhost/_prueba-proxy')->assertExactJson([true, '201.141.1.20', true]);
+
+        // Otra máquina de la red no es el proxy: sus cabeceras se ignoran.
+        $this->withServerVariables(['REMOTE_ADDR' => '192.168.1.50'])->withHeaders($cabeceras)
+            ->get('http://localhost/_prueba-proxy')->assertExactJson([false, '192.168.1.50', false]);
+    }
+
+    public function test_en_mantenimiento_se_explica_en_espanol(): void
+    {
+        auth()->logout();
+        $this->app->maintenanceMode()->activate([]);
+        try {
+            $this->get('/login')->assertStatus(503)
+                ->assertSee('Estamos actualizando el sistema')->assertSee('images/sipam-logo.png')
+                ->assertDontSee('Service Unavailable');
+        } finally {
+            $this->app->maintenanceMode()->deactivate();
+        }
     }
 
     public function test_la_hora_es_la_del_centro_de_mexico(): void
